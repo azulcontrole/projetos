@@ -1,0 +1,159 @@
+use `azul_controle`;
+drop procedure if exists `classEmpresa_proc`;
+
+delimiter $$
+use `azul_controle`$$
+create procedure `classEmpresa_proc`(
+  in p_opt int(1),
+  in p_id_empresa int(11),
+  in p_id_atividade int(11),
+  in p_cnpj_cpf varchar(20),
+  in p_class_empresa int(1),
+  in p_razao_social varchar(100),
+  in p_fantasia varchar(100),
+  in p_contato varchar(100),
+  in p_numero_telefone varchar(20),
+  in p_tipo_telefone char(1),
+  in p_endereco varchar(100),
+  in p_numero_endereco varchar(10),
+  in p_complemento varchar(45),
+  in p_bairro varchar(45),
+  in p_cidade varchar(45),
+  in p_uf varchar(2),
+  in p_inscr_estadual varchar(45),
+  in p_inscr_municipal varchar(45),
+  in p_cep_empresa varchar(10),
+  in p_pais varchar(45),
+  in p_e_mail varchar(100),
+  in p_site varchar(100),
+  in p_sexo TINYINT(1),
+  in p_status TINYINT(1) 
+ )
+main:begin
+  declare d_countcp int;
+  declare d_id_atividade int(11);
+  declare d_ultimoid int(11);
+  declare d_cnpjcpf varchar(20);
+  declare d_inclusao int(1);
+  declare d_opt int(1);
+  declare d_cod_grupo int(3);
+  declare d_descricao_grupo text; 
+  declare d_msg varchar(100);
+  declare d_tpmsg char(1);
+  declare icount integer(5);
+  declare bresult boolean;
+  declare `_rollback` bool default 0;
+
+    
+   -- declare continue handler for sqlexception set `_rollback` = 1; --
+/*
+  declare exit handler for sqlexception
+      begin
+         rollback;
+         get diagnostics condition 1 @sqlstate = returned_sqlstate, 
+          @errno = mysql_errno, @text = message_text;
+         set @full_error = concat("error ", @errno, " (", @sqlstate, "): ", @text);
+         select @full_error;--
+      end;
+*/
+
+DECLARE EXIT HANDLER FOR 1052 rollback;
+DECLARE EXIT HANDLER FOR 1054 rollback;
+DECLARE EXIT HANDLER FOR 1062 rollback;
+DECLARE EXIT HANDLER FOR 1048 rollback;
+-- p_class_empresa = 1 Juridica, 2 Fisica.
+  start transaction;
+
+  set d_opt=0;
+  set d_id_atividade=0;
+  set d_cod_grupo=0;
+  set bresult = false; 
+  set d_cnpjcpf = (select fun_formata_cpfcnpj(p_cnpj_cpf,p_class_empresa));
+  set d_countcp = (select char_length(d_cnpjcpf));
+  SELECT `id_atividades` into d_id_atividade
+  FROM `atividades`
+  where `atividades`.`id_atividades`=p_id_atividade;
+  
+  if (d_id_atividade = 0 or d_id_atividade is null) then
+     select 'Atividade Não cadastrada';
+     rollback;
+     LEAVE main;
+  end if;
+  if (p_opt = 1) then
+      set icount = (select count(0) from empresa where `cnpj_cpf`=p_cnpj_cpf);
+      if (icount = 0 or icount is null) then     
+         INSERT INTO `empresa`
+               (`id_atividade`
+               ,`cnpj_cpf`
+               ,`razao_social`
+               ,`fantasia`
+               ,`contato`
+               ,`numero_telefone`
+               ,`tipo_telefone`
+               ,`endereco`
+               ,`numero_endereco`
+               ,`complemento`
+               ,`bairro`
+               ,`cidade`
+               ,`uf`
+               ,`inscr_estadual`
+               ,`inscr_municipal`
+               ,`cep_empresa`
+               ,`pais`
+               ,`e_mail`
+               ,`site`
+               ,`class_empresa`
+               ,`sexo`
+               ,`status`)
+         VALUES
+               (p_id_atividade
+               ,p_cnpj_cpf
+               ,p_razao_social
+               ,p_fantasia
+               ,p_contato
+               ,p_numero_telefone
+               ,p_tipo_telefone
+               ,p_endereco
+               ,p_numero_endereco
+               ,p_complemento
+               ,p_bairro
+               ,p_cidade
+               ,p_uf
+               ,p_inscr_estadual
+               ,p_inscr_municipal
+               ,p_cep_empresa
+               ,p_pais
+               ,p_e_mail
+               ,p_site
+               ,p_class_empresa
+               ,p_sexo
+               ,p_status);
+         set d_ultimoid=(SELECT id_empresa FROM empresa WHERE id_empresa = LAST_INSERT_ID());
+         if (d_ultimoid = 0 or d_ultimoid is null) then
+             select 'Problemas ao gravar empresa';
+             rollback;
+             LEAVE main;
+         end if;
+         INSERT INTO `local_estoque`
+               (`id_empresa`
+               ,`localizacao`
+               ,`area`
+               ,`setor`)
+         VALUES
+               (d_ultimoid
+               ,'MATRIZ'
+               ,'CENTRAL'
+               ,'0');
+      else
+         select 'empresa já cadastrada';
+         rollback;
+         set d_inclusao =0;
+         set p_opt = 0;
+         LEAVE main;
+      end if;
+  end if;    
+commit;
+
+END$$
+
+DELIMITER ;

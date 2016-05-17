@@ -1,0 +1,100 @@
+USE `SISCOM`;
+DROP procedure IF EXISTS `classGrupo_proc`;
+
+DELIMITER $$
+USE `SISCOM`$$
+CREATE PROCEDURE `classGrupo_proc`(
+  IN p_opt INT(1),
+  IN p_IDEMPRESA INT(11),
+  IN p_COD_GRUPO int(3),
+  IN p_DESCRICAO_GRUPO text,
+  IN p_STATUS CHAR(1) 
+ )
+BEGIN
+  DECLARE d_opt INT(1);
+  DECLARE d_COD_GRUPO int(3);
+  DECLARE d_DESCRICAO_GRUPO text; 
+  DECLARE d_MSG VARCHAR(100);
+  DECLARE d_TPMSG CHAR(1);
+  DECLARE iCount INTEGER(5);
+  DECLARE bResult BOOLEAN;
+  DECLARE `_rollback` BOOL DEFAULT 0;
+    
+   -- DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET `_rollback` = 1; --
+/*
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+      BEGIN
+         ROLLBACK;
+         GET DIAGNOSTICS CONDITION 1 @sqlstate = RETURNED_SQLSTATE, 
+          @errno = MYSQL_ERRNO, @text = MESSAGE_TEXT;
+         SET @full_error = CONCAT("ERROR ", @errno, " (", @sqlstate, "): ", @text);
+         SELECT @full_error;--
+      END;
+*/
+  START TRANSACTION;
+
+  SET d_opt=0;
+  SET d_COD_GRUPO=0;
+  SET bResult = FALSE;
+
+  IF (p_opt = 1) THEN
+      SET iCount = (SELECT count(0) FROM GRUPO WHERE COD_GRUPO=p_COD_GRUPO AND IDEMPRESA=p_IDEMPRESA);
+      IF (iCount = 0 OR iCount IS NULL) THEN
+         INSERT INTO GRUPO
+            (COD_GRUPO,DESCRICAO_GRUPO,STATUS,IDEMPRESA)
+            VALUES
+            (p_COD_GRUPO,UPPER(p_DESCRICAO_GRUPO),1,p_IDEMPRESA);
+      END IF;
+  ELSE
+     IF (p_opt = 2) THEN
+        SELECT COD_GRUPO      C_GRUPO
+            ,DESCRICAO_GRUPO  C_DESCRICAOGRUPO
+            ,IF(STATUS=1,'ATIVO','INATIVO') C_STATUSGRUPO
+        FROM GRUPO
+        WHERE COD_GRUPO=p_COD_GRUPO
+          AND IDEMPRESA=p_IDEMPRESA
+          AND STATUS=1;
+     ELSE
+        IF (p_opt = 3) THEN
+              SELECT COD_GRUPO      C_GRUPO
+                  ,DESCRICAO_GRUPO  C_DESCRICAOGRUPO
+                  ,IF(STATUS=1,'ATIVO','INATIVO') C_STATUSGRUPO
+              FROM GRUPO
+              WHERE IDEMPRESA=p_IDEMPRESA
+              ORDER BY STATUS DESC;
+        ELSE
+            IF (p_opt = 4) THEN
+                UPDATE GRUPO SET
+                   DESCRICAO_GRUPO=UPPER(p_DESCRICAO_GRUPO)
+                   ,STATUS=p_STATUS
+                WHERE COD_GRUPO=p_COD_GRUPO
+                  AND IDEMPRESA=p_IDEMPRESA
+                  AND STATUS=1;
+                SELECT COD_GRUPO      C_GRUPO
+                       ,DESCRICAO_GRUPO  C_DESCRICAOGRUPO
+                       ,IF(STATUS=1,'ATIVO','INATIVO') C_STATUSGRUPO
+                FROM GRUPO
+                WHERE COD_GRUPO=p_COD_GRUPO
+                  AND IDEMPRESA=p_IDEMPRESA
+                  AND STATUS=1;
+          ELSE 
+               IF (p_opt = 5) THEN
+                  SET iCount = 0;
+                  SET iCount = (SELECT count(0) FROM SUBGRUPO WHERE COD_GRUPO=p_COD_GRUPO AND IDEMPRESA=p_IDEMPRESA);
+                  IF (iCount = 0 OR iCount IS NULL) THEN
+                      DELETE FROM GRUPO WHERE COD_GRUPO=p_COD_GRUPO AND IDEMPRESA=p_IDEMPRESA;
+                  ELSE
+                      SET d_TPMSG=9;
+                      SET d_MSG='IMPOSSIVEL EXCLUSAO DE GRUPO COM SUBGRUPO ASSOCIADO';
+                      SELECT d_TPMSG,d_MSG; 
+                  END IF;
+               END IF;                            
+            END IF;
+        END IF;
+     END IF;
+  END IF;
+COMMIT;
+
+END$$
+
+DELIMITER ;
