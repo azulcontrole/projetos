@@ -1,5 +1,5 @@
 USE `azul_controlev2`;
-DROP procedure IF EXISTS `classCompra_proc`;
+DROP procedure IF EXISTS `classCompraDet_proc`;
 /*
 USE azul_controlev2;
  SELECT * FROM testenome WHERE coluna like ('%TAR%VER%');
@@ -7,8 +7,9 @@ USE azul_controlev2;
 */
 DELIMITER $$
 USE `azul_controlev2`$$
-CREATE PROCEDURE `classCompra_proc`(
+CREATE PROCEDURE `classCompraDet_proc`(
 in p_opt               int(1),
+in p_tpcod             int(1),
 in p_id_pessoa         int(11),
 -- compra_cab --
 in p_id_compras_cab    int(11),
@@ -64,7 +65,32 @@ main: BEGIN
    set d_id_grupo=0;
    set d_id_empresa=0;
    set d_id_pessoa=0;
+-- tpcod = 1 (consulta pelo codigo de barras)
+-- tpcod = 2 (consulta pelo id produto)
 --
+   if (p_tpcod = 1) then
+       select
+select `referencia_produto`.`id_referencia`,
+       `referencia_produto`.`id_produto`,
+       `referencia_produto`.`cod_ean`,
+       `referencia_produto`.`foto`,
+       `referencia_produto`.`quant_minima`,
+       `referencia_produto`.`id_valor_atributos`,
+       `referencia_produto`.`status`,
+       GROUP_CONCAT(`valor_atributo`.`valor_atributo` order by `relacao`.`id_valor_atributo` SEPARATOR'|')
+  from `referencia_produto`
+  left join `relacao` on `relacao`.`id_referencia`=`referencia_produto`.`id_referencia`
+  left join `valor_atributo` on `valor_atributo`.`id_valor_atributo`=`relacao`.`id_valor_atributo`
+  left join `estoque` on `estoque`.`id_referencia` = `relacao`.`id_referencia`
+-- where `referencia_produto`.`id_referencia`=7
+ where `referencia_produto`.`cod_ean`='1111113'
+   and `referencia_produto`.`id_empresa`=2
+-- where `referencia_produto`.`id_produto`=1
+ GROUP BY `referencia_produto`.`id_referencia`
+ ORDER BY `referencia_produto`.`cod_ean`
+ ;
+        
+   end if;
    if (p_opt = 1) then
         select `pessoa`.`id` into d_id_pessoa
         from `pessoa`

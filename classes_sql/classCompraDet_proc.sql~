@@ -1,5 +1,5 @@
 USE `azul_controlev2`;
-DROP procedure IF EXISTS `classCompra_proc`;
+DROP procedure IF EXISTS `classCompraCab_proc`;
 /*
 USE azul_controlev2;
  SELECT * FROM testenome WHERE coluna like ('%TAR%VER%');
@@ -7,7 +7,7 @@ USE azul_controlev2;
 */
 DELIMITER $$
 USE `azul_controlev2`$$
-CREATE PROCEDURE `classCompra_proc`(
+CREATE PROCEDURE `classCompraCab_proc`(
 in p_opt               int(1),
 in p_id_pessoa         int(11),
 -- compra_cab --
