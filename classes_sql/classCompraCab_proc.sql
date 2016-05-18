@@ -34,6 +34,8 @@ in p_status               tinyint(1),
 )
 main: BEGIN
 
+   declare d_emissao_nfe_cab date;
+   declare d_entrada_nfe_cab date;
    declare d_id_subgrupo   int(11);
    declare d_id_grupo      int(11);
    declare d_id_pessoa     int(11);
@@ -60,6 +62,8 @@ main: BEGIN
 
    START TRANSACTION;
    
+   set d_emissao_nfe_cab=STR_TO_DATE(p_emissao_nfe_cab, '%d/%m/%Y');  
+   set d_entrada_nfe_cab=STR_TO_DATE(p_entrada_nfe_cab, '%d/%m/%Y');  
    set d_id_subgrupo=0;
    set d_id_grupo=0;
    set d_id_empresa=0;
@@ -68,16 +72,55 @@ main: BEGIN
 -- tpcod = 2 (consulta pelo id produto)
 --
    if (p_opt = 1) then
-        select `pessoa`.`id` into d_id_pessoa
-        from `pessoa`
-        where `pessoa`.`id`=p_id_pessoa;
-        if (d_id_pessoa = 0 or d_id_pessoa is null) then
-           set p_opt=0;
-           select 'Fornecedor não cadastrado';
-           rollback;
-           LEAVE main;
-       end if;
-       
+      select `pessoa`.`id` into d_id_pessoa
+      from `pessoa`
+      where `pessoa`.`id`=p_id_pessoa;
+      if (d_id_pessoa = 0 or d_id_pessoa is null) then
+          set p_opt=0;
+          select 'Fornecedor não cadastrado';
+          rollback;
+          LEAVE main;
+      end if;
+      insert into `compras_cab`
+            (`numero_nfe_cab`
+            ,`id_pessoa`
+            ,`id_tipo_lcto`
+            ,`emissao_nfe_cab`
+            ,`entrada_nfe_cab`
+            ,`total_nfe_cab`
+            ,`icms_nfe_cab`
+            ,`ipi_nfe_cab`
+            ,`iss_nfe_cab`
+            ,`irf_nfe_cab`
+            ,`vlr_icms_nfe_cab`
+            ,`vlr_ipi_nfe_cab`
+            ,`vlr_iss_nfe_cab`
+            ,`vlr_irf_nfe_cab`
+            ,`cidade_nfe_cab`
+            ,`uf_nfe_cab`
+            ,`base_calculo_nfe_cab`
+            ,`ibge_cab`
+            ,`chave_nfe_cab`)
+       values
+            (p_numero_nfe_cab
+            ,p_id_pessoa
+            ,p_id_tipo_lcto
+            ,d_emissao_nfe_cab
+            ,d_entrada_nfe_cab
+            ,p_total_nfe_cab
+            ,p_icms_nfe_cab
+            ,p_ipi_nfe_cab
+            ,p_iss_nfe_cab
+            ,p_irf_nfe_cab
+            ,p_vlr_icms_nfe_cab
+            ,p_vlr_ipi_nfe_cab
+            ,p_vlr_iss_nfe_cab
+            ,p_vlr_irf_nfe_cab
+            ,p_cidade_nfe_cab
+            ,p_uf_nfe_cab
+            ,p_base_calculo_nfe_cab
+            ,p_ibge_cab
+            ,p_chave_nfe_cab);            
    end if;
 commit;
   

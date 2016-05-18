@@ -5,7 +5,8 @@ import br.com.azulcontrole.persistencia.jdbc.UsuarioDAO;
 public class TestandoUsuarioDAO {
 
 	public static void main(String[] args) {
-		testExcluir();
+		//testExcluir();
+		testSalvar();
 
 	}
 
@@ -16,7 +17,7 @@ public class TestandoUsuarioDAO {
 		UsuarioDAO usuDAO = new UsuarioDAO();
 		usuDAO.excluir(usu);
 		
-		System.out.println("Exluido com sucesso");
+		System.out.println("Excluido com sucesso");
 	}
 	
 	public static void testAlterar(){
@@ -43,6 +44,20 @@ public class TestandoUsuarioDAO {
 		
 		System.out.println("Cadastrado com sucesso");
 
+	}
+	
+	public static void testSalvar(){
+		Usuario usuario = new Usuario();
+//		usuario.setId(1);
+		usuario.setName("Teste salvar2 cadastro");
+		usuario.setLogin("loginCadastro");
+		usuario.setSenha("cad1");
+		
+		UsuarioDAO usuDAO = new UsuarioDAO();
+		usuDAO.salvar(usuario);
+		
+		System.out.println("Salvo com sucesso");
+		
 	}
 
 }
