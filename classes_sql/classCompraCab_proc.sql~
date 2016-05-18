@@ -77,6 +77,7 @@ main: BEGIN
            rollback;
            LEAVE main;
        end if;
+       
    end if;
 commit;
   
