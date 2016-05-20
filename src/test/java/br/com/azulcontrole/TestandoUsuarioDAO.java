@@ -1,4 +1,6 @@
 package br.com.azulcontrole;
+import java.util.List;
+
 import br.com.azulcontrole.persistencia.entidade.Usuario;
 import br.com.azulcontrole.persistencia.jdbc.UsuarioDAO;
 
@@ -6,8 +8,43 @@ public class TestandoUsuarioDAO {
 
 	public static void main(String[] args) {
 		//testExcluir();
-		testSalvar();
+		//testSalvar();
+		//testBuscarPorId();
+		//testBuscarTodos();
+		testProcedure();
 
+	}
+
+	public static void testProcedure(){
+		Usuario usuario = new Usuario();
+		usuario.setOpt(1);
+		usuario.setId(0);
+		usuario.setName("Teste proced com retorno");
+		usuario.setLogin("loginProcedure");
+		usuario.setSenha("proced1");
+		usuario.setDataCadastro("25/05/2016");
+		
+		UsuarioDAO usuDAO = new UsuarioDAO();
+		usuDAO.chamaProcedure(usuario);
+		
+		System.out.println("Salvo com sucesso"+" | ");
+		
+	}
+	
+	
+	public static void testBuscarTodos() {
+		UsuarioDAO usuDAO = new UsuarioDAO();
+		List<Usuario> lista = usuDAO.buscarTodos();
+		for(Usuario u : lista){	
+	    	System.out.println(u);		
+    	}
+	}
+
+	public static void testBuscarPorId() {
+		UsuarioDAO usuDAO = new UsuarioDAO();
+		Usuario usuario = usuDAO.buscarPorId(40);
+		System.out.println(usuario);		
+		
 	}
 
 	public static void testExcluir(){
@@ -52,11 +89,12 @@ public class TestandoUsuarioDAO {
 		usuario.setName("Teste salvar2 cadastro");
 		usuario.setLogin("loginCadastro");
 		usuario.setSenha("cad1");
+		usuario.setDataCadastro("25/12/2015");
 		
 		UsuarioDAO usuDAO = new UsuarioDAO();
 		usuDAO.salvar(usuario);
 		
-		System.out.println("Salvo com sucesso");
+		System.out.println("Salvo com sucesso"+" | ");
 		
 	}
 
