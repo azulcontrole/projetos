@@ -1,16 +1,16 @@
 package br.com.azulcontrole.persistencia.entidade;
 
 public class Atividades {
-		private Integer id_atividades;
+		private Integer idAtividades;
 		private Integer codigo;
-        private String nome;
-		private String ativo; //'1 = ativo, 2 inavito',
+        private String  nome;
+		private String  ativo; //'1 = ativo, 2 inavito',
 		
-		public Integer getId_atividades() {
-			return id_atividades;
+		public Integer getIdAtividades() {
+			return idAtividades;
 		}
-		public void setId_atividades(Integer id_atividades) {
-			this.id_atividades = id_atividades;
+		public void setIdAtividades(Integer idAtividades) {
+			this.idAtividades = idAtividades;
 		}
 		public Integer getCodigo() {
 			return codigo;
@@ -30,6 +30,5 @@ public class Atividades {
 		public void setAtivo(String ativo) {
 			this.ativo = ativo;
 		}
-
 		
 }

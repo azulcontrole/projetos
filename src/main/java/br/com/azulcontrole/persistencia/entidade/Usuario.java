@@ -5,11 +5,11 @@ import java.util.Date;
 public class Usuario {
 	private Integer opt;
 	private Integer id;
-	private String name;
-	private String login;
-	private String senha;
-	private String dataCadastro;
-	private Date dataAlterado;	
+	private String  name;
+	private String  login;
+	private String  senha;
+	private String  dataCadastro;
+	private Date    dataAlterado;	
 	
 	public Integer getOpt() {
 		return opt;

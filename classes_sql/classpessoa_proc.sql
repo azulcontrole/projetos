@@ -1,9 +1,9 @@
-USE `azul_controle`;
+USE `azul_controlev2`;
 DROP procedure IF EXISTS `classPessoa_proc`;
 
 DELIMITER $$
-USE `azul_controle`$$
-CREATE PROCEDURE `classPessoa_proc`(
+USE `azul_controlev2`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `classPessoa_proc`(
    in p_opt int(1),
    in p_ret int(1),
    in p_idempresa int(11),
@@ -12,7 +12,7 @@ CREATE PROCEDURE `classPessoa_proc`(
    in p_classe int(1),
    in p_nome varchar(100),
    in p_nomefantasia varchar(45),
-   in p_status int(1), 
+   in p_status int(1),
    in p_contato varchar(50),
    in p_inscrestadual varchar(20),
    in p_inscrmunicipal varchar(20),
@@ -51,7 +51,7 @@ CREATE PROCEDURE `classPessoa_proc`(
   in p_foneempresa_cliente varchar(20),
   in p_tipo_cliente char(1),
   in p_cnpj_cliente varchar(20),
-  in p_referencia_cliente varchar(50),w
+  in p_referencia_cliente varchar(50),
   in p_fone_referencia_cliente varchar(20),
 */
 )
@@ -65,7 +65,7 @@ begin
    declare d_nascimento_fisica date;
    declare d_data_inicio date;
    declare d_admissao_funcionario date;
-   declare d_data_abertura date; 
+   declare d_data_abertura date;
    declare d_classe int(1);
    declare d_juridica int(11);
    declare d_fisica int(11);
@@ -73,8 +73,7 @@ begin
    declare d_cnpjcpf varchar(20);
    declare d_nome varchar(100);
    declare d_nomefantasia varchar(45);
-   --
-   declare d_tppessoa int(211);
+   declare d_tppessoa int(2);
    declare d_status int(1);
    declare d_cod_cliente int(11);
    declare d_nome_cliente varchar(50);
@@ -112,13 +111,13 @@ begin
    declare d_countcp int;
    declare bresult boolean;
    declare `_rollback` bool default 0;
- 
+
 -- declare continue handler for sqlexception set `_rollback` = 1;
 /*
   declare exit handler for sqlexception
 begin
 rollback;
-get diagnostics condition 1 @sqlstate = returned_sqlstate, 
+get diagnostics condition 1 @sqlstate = returned_sqlstate,
  @errno = mysql_errno, @text = message_text;
 set @full_error = concat("error ", @errno, " (", @sqlstate, "): ", @text);
 select @full_error;
@@ -142,16 +141,16 @@ set d_cod_cliente=0;
 set d_inclusao = 0;
 set d_idpessoa=0;
 set bresult = false;
--- p_classe = 1 - Juridica , 2 - Fisica  
+-- p_classe = 1 - Juridica , 2 - Fisica
 if (p_classe > 2) or (p_classe < 1) then
-   select 'Classe Invalida';
+   select 'Classe Invalida' mensagem;
    rollback;
    set d_inclusao =0;
    set p_opt = 0;
 end if;
 
 if (p_tppessoa = 4) and (p_id_matricula = 0 or p_id_matricula is null) then
-   select 'funcionario exige numero da matricula';
+   select 'funcionario exige numero da matricula' mensagem;
    rollback;
    set d_inclusao =0;
    set p_opt = 0;
@@ -173,7 +172,7 @@ if (p_opt = 1) then
                   ,1
                   ,p_classe
                   ,p_id_atividades
-                  ,d_data_inicio);      
+                  ,d_data_inicio);
          select id_pessoa into d_idpessoa from pessoa where id_empresa=p_idempresa and cnpj_cpf=d_cnpjcpf;
          if (d_idpessoa > 0) then
             set d_inclusao = 1;
@@ -210,7 +209,7 @@ if (p_opt = 1) then
                      ,p_ecivil_fisica
                      ,p_sexo_fisica
                      ,upper(p_profissao_fisica)
-                     ,p_renda_fisica);                                  
+                     ,p_renda_fisica);
 	            SELECT `id_fisica` INTO d_fisica FROM `fisica` where `id_pessoa` = d_idpessoa;
 	            if (d_fisica=0 or d_fisica is null) then
 	               rollback;
@@ -220,7 +219,7 @@ if (p_opt = 1) then
             end if;
          end if;
       else
-         select 'Já cadastrado';
+         select 'Já cadastrado' mensagem;
          rollback;
          set d_inclusao =0;
          set p_opt = 0;
@@ -247,11 +246,11 @@ if (p_opt = 4) then
                 `contato_juridica`        = upper(p_contato)
                ,`inscrestadual_juridica`  = p_inscrestadual
                ,`inscrmunicipal_juridica` = p_inscrmunicipal
-               ,`data_abertura_juridica`  = d_data_abertura      
+               ,`data_abertura_juridica`  = d_data_abertura
          where `id_pessoa` = d_idpessoa;
       else
          if (p_classe = 2) then
-            update fisica set            
+            update fisica set
                 `rg_fisica`         = p_rg_fisica
                ,`orgao_rg_fisica`   = p_orgao_rg_fisica
                ,`nascimento_fisica` = d_nascimento_fisica
@@ -277,7 +276,7 @@ if (p_opt = 4) then
                ,upper(p_contato)
                ,p_inscrestadual
                ,p_inscrmunicipal
-               ,d_data_abertura);      
+               ,d_data_abertura);
       else
       -- excluir a juridica e cadastrar a fisica
          delete from juridica where id_pessoa = d_idpessoa;
@@ -298,9 +297,9 @@ if (p_opt = 4) then
                ,p_ecivil_fisica
                ,p_sexo_fisica
                ,upper(p_profissao_fisica)
-               ,p_renda_fisica);                                  
+               ,p_renda_fisica);
       end if;
-   end if; 
+   end if;
    update pessoa set
        `nome`          = upper(p_nome)
       ,`nome_fantasia` = upper(p_nomefantasia)
@@ -310,7 +309,7 @@ if (p_opt = 4) then
       ,`id_atividades` = p_id_atividades
       ,`data_inicio`   = d_data_inicio
    where `id_pessoa` = d_idpessoa;
-end if;              
+end if;
 if (p_opt = 5) then
    select id_pessoa into d_idpessoa from pessoa where id_empresa=p_idempresa and cnpj_cpf=d_cnpjcpf;
    delete from pessoa where id_pessoa = d_idpessoa;
@@ -325,7 +324,7 @@ if (d_inclusao = 1) then
             ,`prestacao_servico`)
          VALUES
             (d_idpessoa
-            ,upper(p_prestacao_servico));            
+            ,upper(p_prestacao_servico));
       end if;
       if (p_tppessoa = 4) then
          INSERT INTO `funcionario`
@@ -345,7 +344,7 @@ if (d_inclusao = 1) then
             ,upper(p_senha_funcionario)
             ,d_admissao_funcionario
             ,p_acesso_total
-            ,p_id_matricula);           
+            ,p_id_matricula);
       end if;
       INSERT INTO `endereco`
          (`id_pessoa`
@@ -392,7 +391,7 @@ if (d_inclusao = 4) then
          ,`prestacao_servico`)
       VALUES
          (d_idpessoa
-         ,upper(p_prestacao_servico));            
+         ,upper(p_prestacao_servico));
    end if;
    if (p_tppessoa = 4) then
       INSERT INTO `funcionario`
@@ -412,10 +411,10 @@ if (d_inclusao = 4) then
          ,upper(p_senha_funcionario)
          ,d_admissao_funcionario
          ,p_acesso_total
-         ,p_id_matricula);           
+         ,p_id_matricula);
    end if;
    update `endereco` set
-         `logradouro_endereco`   = upper(p_logradouro_endereco) 
+         `logradouro_endereco`   = upper(p_logradouro_endereco)
          ,`complemento_endereco` = upper(p_complemento_endereco)
          ,`numero_endereco`      = p_numero_endereco
          ,`cep_endereco`         = p_cep_endereco
@@ -425,18 +424,20 @@ if (d_inclusao = 4) then
          ,`tipo_endereco`        = p_tipo_endereco
    where `id_pessoa` = d_idpessoa;
    update `telefone` set
-          `numero_telefone` = p_numero_telefone 
+          `numero_telefone` = p_numero_telefone
          ,`tipo_telefone`   = p_tipo_telefone
    where `id_pessoa` = d_idpessoa;
-   update `email` set 
-          `email` = p_email 
+   update `email` set
+          `email` = p_email
          ,`site`  = p_site
    where `id_pessoa` = d_idpessoa;
 end if;
 
 if (`_rollback`=1) then
+   select 'ERRO' mensagem;
    rollback;
 else
+   select 'OK' mensagem;
    commit;
 end if;
 

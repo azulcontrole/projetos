@@ -1,20 +1,20 @@
 package br.com.azulcontrole.persistencia.entidade;
 
 public class Cfop {
-		private String cfop_natureza;
-		private String cfop_descricao;
+		private String cfopNatureza;
+		private String cfopDescricao;
 		
-		public String getCfop_natureza() {
-			return cfop_natureza;
+		public String getCfopNatureza() {
+			return cfopNatureza;
 		}
-		public void setCfop_natureza(String cfop_natureza) {
-			this.cfop_natureza = cfop_natureza;
+		public void setCfopNatureza(String cfopNatureza) {
+			this.cfopNatureza = cfopNatureza;
 		}
-		public String getCfop_descricao() {
-			return cfop_descricao;
+		public String getCfopDescricao() {
+			return cfopDescricao;
 		}
-		public void setCfop_descricao(String cfop_descricao) {
-			this.cfop_descricao = cfop_descricao;
+		public void setCfopDescricao(String cfopDescricao) {
+			this.cfopDescricao = cfopDescricao;
 		}
-
+		
 }

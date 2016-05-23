@@ -1,153 +1,153 @@
 package br.com.azulcontrole.persistencia.entidade;
 
 public class ComprasCab {
-	    private Integer id_compras_cab;
-	    private String numero_nfe_cab;
-	    private Integer id_pessoa;
-	    private Integer id_tipo_lcto;
-	    private String emissao_nfe_cab;
-	    private String entrada_nfe_cab;
-	    private Double total_nfe_cab;
-	    private Double icms_nfe_cab;
-	    private Double ipi_nfe_cab;
-	    private Double iss_nfe_cab;
-	    private Double irf_nfe_cab;
-	    private Double vlr_icms_nfe_cab;
-	    private Double vlr_ipi_nfe_cab;
-	    private Double vlr_iss_nfe_cab;
-	    private Double vlr_irf_nfe_cab;
-        private String cidade_nfe_cab;
-		private String uf_nfe_cab;
-		private Double base_calculo_nfe_cab;
-		private Integer ibge_cab;
-		private String chave_nfe_cab;
-		private String status;//'0 = ativo, 1 = inativo',
-		public Integer getId_compras_cab() {
-			return id_compras_cab;
+	    private Integer idComprasCab;
+	    private String  numeroNfeCab;
+	    private Integer idPessoa;
+	    private Integer idTipoLcto;
+	    private String  emissaoNfeCab;
+	    private String  entradaNfeCab;
+	    private double  totalNfeCab;
+	    private double  icmsNfeCab;
+	    private double  ipiNfeCab;
+	    private double  issNfeCab;
+	    private double  irfNfeCab;
+	    private double  vlrIcmsNfeCab;
+	    private double  vlrIpiNfeCab;
+	    private double  vlrIssNfeCab;
+	    private double  vlrIrfNfeCab;
+        private String  cidadeNfeCab;
+		private String  ufNfeCab;
+		private double  baseCalculoNfeCab;
+		private Integer ibgeNfeCab;
+		private String  chaveNfeCab;
+		private String  statusNfeCab;//'0 = ativo, 1 = inativo',
+		public Integer getIdComprasCab() {
+			return idComprasCab;
 		}
-		public void setId_compras_cab(Integer id_compras_cab) {
-			this.id_compras_cab = id_compras_cab;
+		public void setIdComprasCab(Integer idComprasCab) {
+			this.idComprasCab = idComprasCab;
 		}
-		public String getNumero_nfe_cab() {
-			return numero_nfe_cab;
+		public String getNumeroNfeCab() {
+			return numeroNfeCab;
 		}
-		public void setNumero_nfe_cab(String numero_nfe_cab) {
-			this.numero_nfe_cab = numero_nfe_cab;
+		public void setNumeroNfeCab(String numeroNfeCab) {
+			this.numeroNfeCab = numeroNfeCab;
 		}
-		public Integer getId_pessoa() {
-			return id_pessoa;
+		public Integer getIdPessoa() {
+			return idPessoa;
 		}
-		public void setId_pessoa(Integer id_pessoa) {
-			this.id_pessoa = id_pessoa;
+		public void setIdPessoa(Integer idPessoa) {
+			this.idPessoa = idPessoa;
 		}
-		public Integer getId_tipo_lcto() {
-			return id_tipo_lcto;
+		public Integer getIdTipoLcto() {
+			return idTipoLcto;
 		}
-		public void setId_tipo_lcto(Integer id_tipo_lcto) {
-			this.id_tipo_lcto = id_tipo_lcto;
+		public void setIdTipoLcto(Integer idTipoLcto) {
+			this.idTipoLcto = idTipoLcto;
 		}
-		public String getEmissao_nfe_cab() {
-			return emissao_nfe_cab;
+		public String getEmissaoNfeCab() {
+			return emissaoNfeCab;
 		}
-		public void setEmissao_nfe_cab(String emissao_nfe_cab) {
-			this.emissao_nfe_cab = emissao_nfe_cab;
+		public void setEmissaoNfeCab(String emissaoNfeCab) {
+			this.emissaoNfeCab = emissaoNfeCab;
 		}
-		public String getEntrada_nfe_cab() {
-			return entrada_nfe_cab;
+		public String getEntradaNfeCab() {
+			return entradaNfeCab;
 		}
-		public void setEntrada_nfe_cab(String entrada_nfe_cab) {
-			this.entrada_nfe_cab = entrada_nfe_cab;
+		public void setEntradaNfeCab(String entradaNfeCab) {
+			this.entradaNfeCab = entradaNfeCab;
 		}
-		public Double getTotal_nfe_cab() {
-			return total_nfe_cab;
+		public double getTotalNfeCab() {
+			return totalNfeCab;
 		}
-		public void setTotal_nfe_cab(Double total_nfe_cab) {
-			this.total_nfe_cab = total_nfe_cab;
+		public void setTotalNfeCab(double totalNfeCab) {
+			this.totalNfeCab = totalNfeCab;
 		}
-		public Double getIcms_nfe_cab() {
-			return icms_nfe_cab;
+		public double getIcmsNfeCab() {
+			return icmsNfeCab;
 		}
-		public void setIcms_nfe_cab(Double icms_nfe_cab) {
-			this.icms_nfe_cab = icms_nfe_cab;
+		public void setIcmsNfeCab(double icmsNfeCab) {
+			this.icmsNfeCab = icmsNfeCab;
 		}
-		public Double getIpi_nfe_cab() {
-			return ipi_nfe_cab;
+		public double getIpiNfeCab() {
+			return ipiNfeCab;
 		}
-		public void setIpi_nfe_cab(Double ipi_nfe_cab) {
-			this.ipi_nfe_cab = ipi_nfe_cab;
+		public void setIpiNfeCab(double ipiNfeCab) {
+			this.ipiNfeCab = ipiNfeCab;
 		}
-		public Double getIss_nfe_cab() {
-			return iss_nfe_cab;
+		public double getIssNfeCab() {
+			return issNfeCab;
 		}
-		public void setIss_nfe_cab(Double iss_nfe_cab) {
-			this.iss_nfe_cab = iss_nfe_cab;
+		public void setIssNfeCab(double issNfeCab) {
+			this.issNfeCab = issNfeCab;
 		}
-		public Double getIrf_nfe_cab() {
-			return irf_nfe_cab;
+		public double getIrfNfeCab() {
+			return irfNfeCab;
 		}
-		public void setIrf_nfe_cab(Double irf_nfe_cab) {
-			this.irf_nfe_cab = irf_nfe_cab;
+		public void setIrfNfeCab(double irfNfeCab) {
+			this.irfNfeCab = irfNfeCab;
 		}
-		public Double getVlr_icms_nfe_cab() {
-			return vlr_icms_nfe_cab;
+		public double getVlrIcmsNfeCab() {
+			return vlrIcmsNfeCab;
 		}
-		public void setVlr_icms_nfe_cab(Double vlr_icms_nfe_cab) {
-			this.vlr_icms_nfe_cab = vlr_icms_nfe_cab;
+		public void setVlrIcmsNfeCab(double vlrIcmsNfeCab) {
+			this.vlrIcmsNfeCab = vlrIcmsNfeCab;
 		}
-		public Double getVlr_ipi_nfe_cab() {
-			return vlr_ipi_nfe_cab;
+		public double getVlrIpiNfeCab() {
+			return vlrIpiNfeCab;
 		}
-		public void setVlr_ipi_nfe_cab(Double vlr_ipi_nfe_cab) {
-			this.vlr_ipi_nfe_cab = vlr_ipi_nfe_cab;
+		public void setVlrIpiNfeCab(double vlrIpiNfeCab) {
+			this.vlrIpiNfeCab = vlrIpiNfeCab;
 		}
-		public Double getVlr_iss_nfe_cab() {
-			return vlr_iss_nfe_cab;
+		public double getVlrIssNfeCab() {
+			return vlrIssNfeCab;
 		}
-		public void setVlr_iss_nfe_cab(Double vlr_iss_nfe_cab) {
-			this.vlr_iss_nfe_cab = vlr_iss_nfe_cab;
+		public void setVlrIssNfeCab(double vlrIssNfeCab) {
+			this.vlrIssNfeCab = vlrIssNfeCab;
 		}
-		public Double getVlr_irf_nfe_cab() {
-			return vlr_irf_nfe_cab;
+		public double getVlrIrfNfeCab() {
+			return vlrIrfNfeCab;
 		}
-		public void setVlr_irf_nfe_cab(Double vlr_irf_nfe_cab) {
-			this.vlr_irf_nfe_cab = vlr_irf_nfe_cab;
+		public void setVlrIrfNfeCab(double vlrIrfNfeCab) {
+			this.vlrIrfNfeCab = vlrIrfNfeCab;
 		}
-		public String getCidade_nfe_cab() {
-			return cidade_nfe_cab;
+		public String getCidadeNfeCab() {
+			return cidadeNfeCab;
 		}
-		public void setCidade_nfe_cab(String cidade_nfe_cab) {
-			this.cidade_nfe_cab = cidade_nfe_cab;
+		public void setCidadeNfeCab(String cidadeNfeCab) {
+			this.cidadeNfeCab = cidadeNfeCab;
 		}
-		public String getUf_nfe_cab() {
-			return uf_nfe_cab;
+		public String getUfNfeCab() {
+			return ufNfeCab;
 		}
-		public void setUf_nfe_cab(String uf_nfe_cab) {
-			this.uf_nfe_cab = uf_nfe_cab;
+		public void setUfNfeCab(String ufNfeCab) {
+			this.ufNfeCab = ufNfeCab;
 		}
-		public Double getBase_calculo_nfe_cab() {
-			return base_calculo_nfe_cab;
+		public double getBaseCalculoNfeCab() {
+			return baseCalculoNfeCab;
 		}
-		public void setBase_calculo_nfe_cab(Double base_calculo_nfe_cab) {
-			this.base_calculo_nfe_cab = base_calculo_nfe_cab;
+		public void setBaseCalculoNfeCab(double baseCalculoNfeCab) {
+			this.baseCalculoNfeCab = baseCalculoNfeCab;
 		}
-		public Integer getIbge_cab() {
-			return ibge_cab;
+		public Integer getIbgeNfeCab() {
+			return ibgeNfeCab;
 		}
-		public void setIbge_cab(Integer ibge_cab) {
-			this.ibge_cab = ibge_cab;
+		public void setIbgeNfeCab(Integer ibgeNfeCab) {
+			this.ibgeNfeCab = ibgeNfeCab;
 		}
-		public String getChave_nfe_cab() {
-			return chave_nfe_cab;
+		public String getChaveNfeCab() {
+			return chaveNfeCab;
 		}
-		public void setChave_nfe_cab(String chave_nfe_cab) {
-			this.chave_nfe_cab = chave_nfe_cab;
+		public void setChaveNfeCab(String chaveNfeCab) {
+			this.chaveNfeCab = chaveNfeCab;
 		}
-		public String getStatus() {
-			return status;
+		public String getStatusNfeCab() {
+			return statusNfeCab;
 		}
-		public void setStatus(String status) {
-			this.status = status;
+		public void setStatusNfeCab(String statusNfeCab) {
+			this.statusNfeCab = statusNfeCab;
 		}
-
-
+		
+		
 }
