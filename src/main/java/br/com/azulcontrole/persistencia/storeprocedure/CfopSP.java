@@ -1,6 +1,6 @@
 package br.com.azulcontrole.persistencia.storeprocedure;
 
-public class CfopProc {
+public class CfopSP {
 	    private Integer pOpt;
 	    private Integer pCodCfop;
 	    private String  pDescricaoCfop;

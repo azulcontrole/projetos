@@ -41,7 +41,7 @@ create procedure `classEmpresa_proc`(
   in p_fantasia varchar(100),
   in p_contato varchar(100),
   in p_numero_telefone varchar(20),
-  in p_tipo_telefone char(1),
+  in p_tipo_telefone INT(1),
   in p_endereco varchar(100),
   in p_numero_endereco varchar(10),
   in p_complemento varchar(45),

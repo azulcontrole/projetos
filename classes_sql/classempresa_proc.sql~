@@ -1,4 +1,32 @@
 use `azul_controle`;
+call `classEmpresa_proc`
+ (1
+  ,0
+  ,5
+  ,'29.080.738/0001-78'
+  ,1
+  ,'p_razao_social'
+  ,'p_fantasia'
+  ,'p_contato'
+  ,'num_telefone'
+  ,'1'
+  ,'p_endereco'
+  ,'p_numeroen'
+  ,'p_complemento'
+  ,'p_bairro'
+  ,'p_cidade'
+  ,'UF'
+  ,'p_inscr_estadual'
+  ,'p_inscr_municipal'
+  ,'p_cep_'
+  ,'p_pais'
+  ,'p_e_mail'
+  ,'p_site'
+  ,1
+  ,1
+ );
+
+use `azul_controle`;
 drop procedure if exists `classEmpresa_proc`;
 
 delimiter $$

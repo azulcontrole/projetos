@@ -5,13 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import br.com.azulcontrole.persistencia.storeprocedure.PessoaProc;
+import br.com.azulcontrole.persistencia.storeprocedure.PessoaSP;
 
 public class PessoaProcDAO {
 	
 	private Connection con = ConexaoFactory.getConnection();
 
-	public void chamaProcedure(PessoaProc pessoaproc) {
+	public void chamaProcedure(PessoaSP pessoaproc) {
 		String sql = "{call classPessoa_proc(?, ?, ?, ?, ?, ?, ?, ?, ?,"
 			    	+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
 			    	+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";

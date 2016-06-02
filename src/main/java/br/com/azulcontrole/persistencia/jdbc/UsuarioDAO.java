@@ -14,7 +14,34 @@ import br.com.azulcontrole.persistencia.entidade.Usuario;
 public class UsuarioDAO {
 	
 	private Connection con = ConexaoFactory.getConnection();
-
+/**
+ * Fazer a autenticação do usuario buscando pelo login e a senha
+ * @param usuConsulta
+ * @return null se não existir e o objeto usuario se existir
+ */
+	public Usuario autenticar(Usuario usuConsulta){
+		
+		String sql = "Select * from users where login=? and senha=?";
+		try (PreparedStatement preparador = con.prepareStatement(sql)){
+			preparador.setString(1, usuConsulta.getLogin());
+			preparador.setString(2, usuConsulta.getSenha());
+			ResultSet resultado = preparador.executeQuery();
+			if(resultado.next()){ //posicionando o cursor no primeiro registro
+				Usuario usuario = new Usuario();
+				usuario.setId(resultado.getInt("id"));
+				usuario.setName(resultado.getString("name"));
+				usuario.setLogin(resultado.getString("login"));
+				usuario.setSenha(resultado.getString("senha"));
+				return usuario;
+			}		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
 	public void cadastrar(Usuario usu){
        
 		String sql = "insert into users (name,login,senha,dataCadastro) values (?,?,?,?)";
@@ -56,7 +83,7 @@ public class UsuarioDAO {
 	}
 	
 	public void salvar(Usuario usuario){
-		if (usuario.getId()!=null){
+		if (usuario.getId()!=null && usuario.getId()!=0){
 			alterar(usuario);
 		}else{
 			cadastrar(usuario);
@@ -144,6 +171,8 @@ public class UsuarioDAO {
 	/**
 	 * Esta chamada de uma procedure que grava um registro e retorna
 	 * um select com todos os registros
+	 * o stmt.executeQuery() executa o sql e retorna valores
+	 * stmt.execute() apenas executa o sql.
 	 * @param usuario
 	 */
 	public void chamaProcedure(Usuario usuario) {

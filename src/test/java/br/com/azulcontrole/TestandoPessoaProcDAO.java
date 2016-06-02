@@ -1,7 +1,7 @@
 package br.com.azulcontrole;
 
 import br.com.azulcontrole.persistencia.jdbc.PessoaProcDAO;
-import br.com.azulcontrole.persistencia.storeprocedure.PessoaProc;
+import br.com.azulcontrole.persistencia.storeprocedure.PessoaSP;
 
 public class TestandoPessoaProcDAO {
 	
@@ -11,11 +11,11 @@ public class TestandoPessoaProcDAO {
 	}
 
 	private static void testChamaProc() {
-		PessoaProc pessoaproc = new PessoaProc();
+		PessoaSP pessoaproc = new PessoaSP();
 		pessoaproc.setpOpt(1);
 		pessoaproc.setpRet(0);
 		pessoaproc.setpIdempresa(4);
-		pessoaproc.setpCnpjCpf("444.444.444-44");
+		pessoaproc.setpCnpjCpf("666.444.444-44");
 		pessoaproc.setpTpPessoa(1);
 		pessoaproc.setpClasse(2);
 		pessoaproc.setpNome("TESTE1 JAVA PROCEDURE");

@@ -1,6 +1,6 @@
 package br.com.azulcontrole.persistencia.storeprocedure;
 
-public class PessoaProc {
+public class PessoaSP {
 	    private Integer pOpt;
 	    private Integer pRet;
 	    private Integer pIdempresa;

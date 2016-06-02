@@ -142,13 +142,6 @@ set d_inclusao = 0;
 set d_idpessoa=0;
 set bresult = false;
 -- p_classe = 1 - Juridica , 2 - Fisica
-if (p_classe > 2) or (p_classe < 1) then
-   select 'Classe Invalida' mensagem;
-   rollback;
-   set d_inclusao =0;
-   set p_opt = 0;
-end if;
-
 if (p_tppessoa = 4) and (p_id_matricula = 0 or p_id_matricula is null) then
    select 'funcionario exige numero da matricula' mensagem;
    rollback;
@@ -158,6 +151,24 @@ end if;
 
 set d_cnpjcpf = (select fun_formata_cpfcnpj(p_cnpjcpf,p_classe));
 set d_countcp = (select char_length(d_cnpjcpf));
+
+if (d_countcp = 11) then
+    set p_classe = 2;
+else
+    if (p_classe > 11) then
+        set p_classe = 1;
+    else
+        set p_classe = 0;
+    end if;
+end if;
+
+if (p_classe > 2) or (p_classe < 1) then
+   select 'Classe Invalida' mensagem;
+   rollback;
+   set d_inclusao =0;
+   set p_opt = 0;
+end if;
+
 if (p_opt = 1) then
    if (p_cnpjcpf != '') then
       set icount = (select count(0) from pessoa where cnpj_cpf=d_cnpjcpf and id_empresa=p_idempresa);
