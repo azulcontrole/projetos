@@ -23,6 +23,9 @@ public class AutenticadorController extends HttpServlet {
 		String senha = req.getParameter("senha");
 		
 		Usuario usuario = new Usuario();
+		usuario.setLogin(login);
+		usuario.setSenha(senha);
+		
 		UsuarioDAO usuariodao = new UsuarioDAO();
 		Usuario usuAutenticado = usuariodao.autenticar(usuario);
 		
@@ -30,13 +33,12 @@ public class AutenticadorController extends HttpServlet {
 			
 			HttpSession sessao = req.getSession();
 			sessao.setAttribute("usuAutenticado", usuAutenticado);
-			
 			sessao.setMaxInactiveInterval(60*5);
-			req.getRequestDispatcher("WEB-INF/index.jsp").forward(req, resp);
-			
+			//req.getRequestDispatcher("WEB-INF/index.jsp").forward(req, resp);
+			req.getRequestDispatcher("WEB-INF/menu.jsp").forward(req, resp);			
 		} else {
 			resp.getWriter().print("<script> window.alert ('Nao Encontrado'); "
-					+ "location.href='login.html'</script>");
+					+ "location.href='login.jsp'</script>");
 		}
 	}
 

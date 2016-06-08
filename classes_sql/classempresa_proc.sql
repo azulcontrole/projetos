@@ -26,12 +26,12 @@ call `classEmpresa_proc`
   ,1
  );
 
-use `azul_controle`;
-drop procedure if exists `classEmpresa_proc`;
+USE `azul_controle`;
+DROP procedure IF EXISTS `classEmpresa_proc`;
 
-delimiter $$
-use `azul_controle`$$
-create procedure `classEmpresa_proc`(
+DELIMITER $$
+USE `azul_controle`$$
+CREATE PROCEDURE `classEmpresa_proc`(
   in p_opt int(1),
   in p_id_empresa int(11),
   in p_id_atividade int(11),
@@ -55,7 +55,7 @@ create procedure `classEmpresa_proc`(
   in p_e_mail varchar(100),
   in p_site varchar(100),
   in p_sexo TINYINT(1),
-  in p_status TINYINT(1) 
+  in p_status TINYINT(1)
  )
 main:begin
   declare d_countcp int;
@@ -65,20 +65,20 @@ main:begin
   declare d_inclusao int(1);
   declare d_opt int(1);
   declare d_cod_grupo int(3);
-  declare d_descricao_grupo text; 
+  declare d_descricao_grupo text;
   declare d_msg varchar(100);
   declare d_tpmsg char(1);
   declare icount integer(5);
   declare bresult boolean;
   declare `_rollback` bool default 0;
 
-    
+
    -- declare continue handler for sqlexception set `_rollback` = 1; --
 /*
   declare exit handler for sqlexception
       begin
          rollback;
-         get diagnostics condition 1 @sqlstate = returned_sqlstate, 
+         get diagnostics condition 1 @sqlstate = returned_sqlstate,
           @errno = mysql_errno, @text = message_text;
          set @full_error = concat("error ", @errno, " (", @sqlstate, "): ", @text);
          select @full_error;--
@@ -95,21 +95,21 @@ DECLARE EXIT HANDLER FOR 1048 rollback;
   set d_opt=0;
   set d_id_atividade=0;
   set d_cod_grupo=0;
-  set bresult = false; 
+  set bresult = false;
   set d_cnpjcpf = (select fun_formata_cpfcnpj(p_cnpj_cpf,p_class_empresa));
   set d_countcp = (select char_length(d_cnpjcpf));
   SELECT `id_atividades` into d_id_atividade
   FROM `atividades`
   where `atividades`.`id_atividades`=p_id_atividade;
-  
+
   if (d_id_atividade = 0 or d_id_atividade is null) then
-     select 'Atividade Não cadastrada';
+     select 'Atividade Não cadastrada' mensagem;
      rollback;
      LEAVE main;
   end if;
   if (p_opt = 1) then
       set icount = (select count(0) from empresa where `cnpj_cpf`=p_cnpj_cpf);
-      if (icount = 0 or icount is null) then     
+      if (icount = 0 or icount is null) then
          INSERT INTO `empresa`
                (`id_atividade`
                ,`cnpj_cpf`
@@ -158,7 +158,7 @@ DECLARE EXIT HANDLER FOR 1048 rollback;
                ,p_status);
          set d_ultimoid=(SELECT id_empresa FROM empresa WHERE id_empresa = LAST_INSERT_ID());
          if (d_ultimoid = 0 or d_ultimoid is null) then
-             select 'Problemas ao gravar empresa';
+             select 'Problemas ao gravar empresa' mensagem;
              rollback;
              LEAVE main;
          end if;
@@ -172,14 +172,47 @@ DECLARE EXIT HANDLER FOR 1048 rollback;
                ,'MATRIZ'
                ,'CENTRAL'
                ,'0');
+       select 'OK' mensagem;
       else
-         select 'empresa já cadastrada';
+         select 'empresa já cadastrada' mensagem;
          rollback;
          set d_inclusao =0;
          set p_opt = 0;
          LEAVE main;
       end if;
-  end if;    
+/*
+  else
+      select 'Nenhum Cadastro Realizado! Verifique o Problema' mensagem;
+*/
+  end if;
+  if (p_opt = 2) then
+      SELECT `empresa`.`id_empresa` ID,
+             `empresa`.`id_atividade` IDATIVIDADE,
+             `empresa`.`cnpj_cpf` CNPJ,
+             `empresa`.`razao_social` RAZAOSOCIAL,
+             `empresa`.`fantasia` FANTASIA,
+             `empresa`.`contato` CONTATO,
+             `empresa`.`numero_telefone` TELEFONE,
+             `empresa`.`tipo_telefone` TPTELEFONE,
+             `empresa`.`endereco` ENDERECO,
+             `empresa`.`numero_endereco` NUMERO,
+             `empresa`.`complemento` COMPLEMENTO,
+             `empresa`.`bairro` BAIRRO,
+             `empresa`.`cidade` CIDADE,
+             `empresa`.`uf` UF,
+             `empresa`.`inscr_estadual` INSCRESTADUAL,
+             `empresa`.`inscr_municipal` INSCRMUNICIPAL,
+             `empresa`.`cep_empresa` CEPEMPRESA,
+             `empresa`.`pais` PAIS,
+             `empresa`.`e_mail` EMAIL,
+             `empresa`.`site` SITE,
+             `empresa`.`class_empresa` CLEMPRESA,
+              DATE_FORMAT(`empresa`.`data_cadastro`,'%d/%m/%Y') DATACADASTRO,
+              DATE_FORMAT(`empresa`.`data_alteracao`,'%d/%m/%Y') DATAALTERACAO,
+             `empresa`.`sexo` SEXO,
+             `empresa`.`status` STATUS
+        FROM `empresa`;
+  end if;
 commit;
 
 END$$

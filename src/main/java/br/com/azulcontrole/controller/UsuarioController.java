@@ -25,7 +25,6 @@ public class UsuarioController extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		System.out.println("Init!!");
 		super.init();
 	}
 
@@ -69,6 +68,17 @@ public class UsuarioController extends HttpServlet {
 			
 			req.setAttribute("usu", usuario);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/formusuario.jsp");
+			dispatcher.forward(req, resp);
+			
+		}else if(acao.equals("men")){
+			Usuario usuario = new Usuario();
+			usuario.setId(0);
+			usuario.setName("");
+			usuario.setLogin("");
+			usuario.setSenha("");
+			
+			req.setAttribute("usu", usuario);
+			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/menu.jsp");
 			dispatcher.forward(req, resp);
 			
 		}
